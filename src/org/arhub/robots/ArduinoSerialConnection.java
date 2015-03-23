@@ -28,10 +28,13 @@ public class ArduinoSerialConnection {
 
 	public void Connect(String comPort) throws SerialPortException {
 		serialPort = new SerialPort(comPort);
+	//	serialPort = new SerialPort("/dev/tty.HC-06-DevB");
+		
 		try{
 			serialPort.openPort();
 		}catch(SerialPortException ex){
-			//if busy, try one more time.
+			//if busy, try one more time. xcccccccccccccccccccccccccccccccccccccccccccccccc 58       88888888888888888                                                                                                                                                                                                                  ccccccccccmv,ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg.
+ 			
 			if(ex.getExceptionType().equals("Port busy")){
 				serialPort.openPort();
 			}else{
@@ -59,29 +62,45 @@ public class ArduinoSerialConnection {
 			if(betweenExclusive(intBytes, 8800, 9300) == true){
 				System.out.println("Zero");
 				
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(0));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
+				
 			}else if(betweenExclusive(intBytes, 900, 1600)){
 				System.out.println("Forward");
 		
 				
 					bytesArray.add(Integer.toString(255));
 					bytesArray.add(Integer.toString(255));
-
+					serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+					bytesArray.clear();
+					
 			
-			serialPort.writeBytes(new byte[255255]);
 			}else if(betweenExclusive(intBytes, 60, 800)){
 				System.out.println("Left");
-				//serialPort.writeBytes(new byte[255-255]);
+				bytesArray.add(Integer.toString(255));
+				bytesArray.add(Integer.toString(0));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
 			}else if(betweenExclusive(intBytes, 16116, 18100)){
 				System.out.println("Right");
-				//serialPort.writeBytes(new byte[-255255]);
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(255));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
 			}else if(betweenExclusive(intBytes, 38000, 133100)){
 				System.out.println("Backwards");
-				//serialPort.writeBytes(new byte[-255-255]);
+				bytesArray.add(Integer.toString(500));
+				bytesArray.add(Integer.toString(500));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
 			}
+			
 		//	serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 			}
 	
-			serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+			//serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 		
 //		System.out.println(StringUtils.join(states, ","));
 

@@ -66,27 +66,60 @@ public class BotControlStationUI {
 		jframe.pack();
 		jframe.setVisible(true);
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jframe.setSize(800, 600);
+		jframe.setSize(1000, 800);
 
 	}
-
+	String ports[] ={""};
+	JComboBox<String> comList;
+	
 	private Component getSerialConnectionPane(ArduinoSerialConnection connection2) {
 
-		JPanel panel = new JPanel();
-
-		final JComboBox<String> comList = new JComboBox<String>(connection.GetComPorts().toArray(new String[] {}));
+		final JPanel panel = new JPanel();
+		
+		ports = connection.GetComPorts().toArray(new String[] {});
+		
+		
+		
+		
+		
+		 comList = new JComboBox<String>(ports);
+		final JTextField textField = new JTextField(20);
+		final JButton refreshButton = new JButton("Refresh");
+		panel.add(textField);
 		panel.add(comList);
-
+		
 		final JLabel connectionStatusLabel = new JLabel("Disconnected");
 
 		final JButton connectBtn = new JButton("Connect");
 		final JButton disconnectBtn = new JButton("Disconnect");
 		disconnectBtn.setEnabled(false);
+		refreshButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+			
+		
+				ports = connection.GetComPorts().toArray(new String[] {});
+				comList.removeAllItems();
+			    for(String s:ports){
+			        comList.addItem(s);
+			    }
+				comList = new JComboBox<String>(ports);
+				panel.revalidate();
+				panel.repaint();
+				
+			}
+		});
+		
 		connectBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if(textField.getText().length() > 0){
+					connect(connectionStatusLabel, disconnectBtn, connectBtn, textField.getText());
+				}else{
 				connect(connectionStatusLabel, disconnectBtn, connectBtn, comList.getItemAt(comList.getSelectedIndex()));
+				}
 			}
 		});
 		disconnectBtn.addActionListener(new ActionListener() {
@@ -101,7 +134,7 @@ public class BotControlStationUI {
 		panel.add(connectBtn);
 		panel.add(disconnectBtn);
 		panel.add(connectionStatusLabel);
-
+		panel.add(refreshButton);
 		return panel;
 	}
 
