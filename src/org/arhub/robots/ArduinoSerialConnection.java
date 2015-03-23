@@ -10,12 +10,20 @@ import jssc.SerialPortList;
 
 import org.apache.commons.lang3.StringUtils;
 
+
 public class ArduinoSerialConnection {
 
 	private SerialPort serialPort;
+	private List<String> ports;
 
 	public List<String> GetComPorts() {
-		return Arrays.asList(SerialPortList.getPortNames());
+		
+		setPorts((List<String>) Arrays.asList(SerialPortList.getPortNames()));
+
+	
+		
+		
+		return ports;
 	}
 
 	public void Connect(String comPort) throws SerialPortException {
@@ -39,11 +47,43 @@ public class ArduinoSerialConnection {
 		for (ControlState controlState : controlStates) {
 			states.add(Integer.toString(controlState.value));
 		}
-
+		List<String> bytesArray = new ArrayList<String>();
+		
+		
 		if (serialPort != null) {
-			serialPort.writeBytes(((StringUtils.join(states, ",") + "\n").getBytes()));
-		}
-		System.out.println(StringUtils.join(states, ","));
+			
+			int intBytes = Integer.parseInt(StringUtils.join(states, ",").replace(",", ""));
+			
+		
+			System.out.println(intBytes);
+			if(betweenExclusive(intBytes, 8800, 9300) == true){
+				System.out.println("Zero");
+				
+			}else if(betweenExclusive(intBytes, 900, 1600)){
+				System.out.println("Forward");
+		
+				
+					bytesArray.add(Integer.toString(255));
+					bytesArray.add(Integer.toString(255));
+
+			
+			serialPort.writeBytes(new byte[255255]);
+			}else if(betweenExclusive(intBytes, 60, 800)){
+				System.out.println("Left");
+				//serialPort.writeBytes(new byte[255-255]);
+			}else if(betweenExclusive(intBytes, 16116, 18100)){
+				System.out.println("Right");
+				//serialPort.writeBytes(new byte[-255255]);
+			}else if(betweenExclusive(intBytes, 38000, 133100)){
+				System.out.println("Backwards");
+				//serialPort.writeBytes(new byte[-255-255]);
+			}
+		//	serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+			}
+	
+			serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+		
+//		System.out.println(StringUtils.join(states, ","));
 
 	}
 
@@ -51,4 +91,26 @@ public class ArduinoSerialConnection {
 		serialPort.closePort();
 	}
 
+	public List<String> getPorts() {
+		return ports;
+	}
+
+	public void setPorts(List<String> ports) {
+		this.ports = ports;
+	}
+	
+	 public static boolean betweenExclusive(int x, int min, int max)
+	   {
+	       return x>min && x<max;    
+	   }
+	 
+
 }
+class MathUtil
+{
+   public static boolean betweenExclusive(int x, int min, int max)
+   {
+       return x>min && x<max;    
+   }
+}
+

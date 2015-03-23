@@ -1,5 +1,4 @@
 package org.arhub.robots;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,6 +25,7 @@ import javax.swing.event.ChangeListener;
 
 import jssc.SerialPortException;
 
+@SuppressWarnings("unused")
 public class BotControlStationUI {
 
 	private GamepadController controller;
