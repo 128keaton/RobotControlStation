@@ -68,31 +68,31 @@ public class ArduinoSerialConnection {
 				bytesArray.clear();
 				
 			}else if(betweenExclusive(intBytes, 900, 1600)){
-				System.out.println("Forward");
+				System.out.println("Left");
 		
 				
 					bytesArray.add(Integer.toString(255));
-					bytesArray.add(Integer.toString(255));
+					bytesArray.add(Integer.toString(0));
 					serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 					bytesArray.clear();
 					
 			
 			}else if(betweenExclusive(intBytes, 60, 800)){
-				System.out.println("Left");
-				bytesArray.add(Integer.toString(255));
-				bytesArray.add(Integer.toString(0));
+				System.out.println("Backward");
+				bytesArray.add(Integer.toString(500));
+				bytesArray.add(Integer.toString(500));
 				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 				bytesArray.clear();
 			}else if(betweenExclusive(intBytes, 16116, 18100)){
-				System.out.println("Right");
-				bytesArray.add(Integer.toString(0));
+				System.out.println("Forward");
+				bytesArray.add(Integer.toString(255));
 				bytesArray.add(Integer.toString(255));
 				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 				bytesArray.clear();
 			}else if(betweenExclusive(intBytes, 38000, 133100)){
-				System.out.println("Backwards");
-				bytesArray.add(Integer.toString(500));
-				bytesArray.add(Integer.toString(500));
+				System.out.println("Right");
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(255));
 				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 				bytesArray.clear();
 			}
