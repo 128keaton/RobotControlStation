@@ -61,6 +61,7 @@ public class ArduinoSerialConnection {
 				break;
 			case 3: zAxis.add(Integer.toString(controlState.value));
 				break;
+			default: break;
 			
 			}
 		}
@@ -73,7 +74,7 @@ public class ArduinoSerialConnection {
 			int intBytesX = Integer.parseInt(StringUtils.join(xAxis, ",").replace(",", ""));
 			int intBytesY = Integer.parseInt(StringUtils.join(yAxis, ",").replace(",", ""));
 			int intBytesZ = Integer.parseInt(StringUtils.join(zAxis, ",").replace(",", ""));
-			int stopAxis = Integer.parseInt(StringUtils.join(xAxis, yAxis, zAxis, ",").replace(",", ","));
+			//int stopAxis = Integer.parseInt(StringUtils.join(intBytesX, intBytesY, intBytesZ, ",").replace(",", ","));
 			
 			/*
 		
@@ -116,7 +117,7 @@ public class ArduinoSerialConnection {
 				bytesArray.clear();
 			}*/
 			
-			if(betweenExclusive(stopAxis, 89, 89) == true){
+			if(betweenExclusive(intBytesY, 85, 89) == true){
 				bytesArray.add(Integer.toString(0));
 				bytesArray.add(Integer.toString(0));
 				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
