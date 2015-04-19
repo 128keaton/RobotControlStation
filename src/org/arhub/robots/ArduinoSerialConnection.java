@@ -46,20 +46,39 @@ public class ArduinoSerialConnection {
 	}
 
 	public void SendGamepadState(List<ControlState> controlStates) throws SerialPortException {
-		List<String> states = new ArrayList<String>();
-		for (ControlState controlState : controlStates) {
-			states.add(Integer.toString(controlState.value));
+	//	List<String> states = new ArrayList<String>();
+		List<String> xAxis = new ArrayList<String>();
+		List<String> yAxis = new ArrayList<String>();
+		List<String> zAxis = new ArrayList<String>();
+		for(ControlState controlState : controlStates){
+		for(int i = 1; i <4; i++){
+		
+			switch(i){
+			
+			case 1: xAxis.add(Integer.toString(controlState.value));
+				break;
+			case 2: yAxis.add(Integer.toString(controlState.value));
+				break;
+			case 3: zAxis.add(Integer.toString(controlState.value));
+				break;
+			
+			}
+		}
 		}
 		List<String> bytesArray = new ArrayList<String>();
 		
 		
 		if (serialPort != null) {
 			
-			int intBytes = Integer.parseInt(StringUtils.join(states, ",").replace(",", ""));
+			int intBytesX = Integer.parseInt(StringUtils.join(xAxis, ",").replace(",", ""));
+			int intBytesY = Integer.parseInt(StringUtils.join(yAxis, ",").replace(",", ""));
+			int intBytesZ = Integer.parseInt(StringUtils.join(zAxis, ",").replace(",", ""));
+			int stopAxis = Integer.parseInt(StringUtils.join(xAxis, yAxis, zAxis, ",").replace(",", ","));
 			
+			/*
 		
 			System.out.println(intBytes);
-			if(betweenExclusive(intBytes, 8800, 9300) == true){
+			(betweenExclusive(intBytes, 8800, 9300) == true(betweenExclusive(intBytes, 8800, 9300) == true
 				System.out.println("Zero");
 				
 				bytesArray.add(Integer.toString(0));
@@ -95,7 +114,61 @@ public class ArduinoSerialConnection {
 				bytesArray.add(Integer.toString(255));
 				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 				bytesArray.clear();
+			}*/
+			
+			if(betweenExclusive(stopAxis, 89, 89) == true){
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(0));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
+				
+			}else if(betweenExclusive(intBytesY, 0, 85) == true){
+				
+				System.out.println("Forward");
+				bytesArray.add(Integer.toString(180));
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(180));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
+				
+			}else if(betweenExclusive(intBytesY, 95, 180) == true){
+				
+				System.out.println("Backward");
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(180));
+				bytesArray.add(Integer.toString(180));
+				bytesArray.add(Integer.toString(0));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
+				
+			}else if(betweenExclusive(intBytesX, 0, 85) == true){
+				
+				System.out.println("Left");
+
+				bytesArray.add(Integer.toString(180));
+				bytesArray.add(Integer.toString(180));
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(0));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
+				
 			}
+			else if(betweenExclusive(intBytesX, 95, 180) == true){
+				
+				System.out.println("Right");
+
+				bytesArray.add(Integer.toString(180));
+				bytesArray.add(Integer.toString(180));
+				bytesArray.add(Integer.toString(0));
+				bytesArray.add(Integer.toString(0));
+				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
+				bytesArray.clear();
+				
+			}
+		
+			
+			
 		//	serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 			}
 	
