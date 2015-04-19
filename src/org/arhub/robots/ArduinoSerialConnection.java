@@ -96,7 +96,6 @@ public class ArduinoSerialConnection {
 				serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 				bytesArray.clear();
 			}
-			
 		//	serialPort.writeBytes(((StringUtils.join(bytesArray, ",") + "\n").getBytes()));
 			}
 	
