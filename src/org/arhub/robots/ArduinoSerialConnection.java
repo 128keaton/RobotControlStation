@@ -30,8 +30,8 @@ public class ArduinoSerialConnection {
 	}
 
 	public void Connect(String comPort) throws SerialPortException {
-	//	serialPort = new SerialPort(comPort);
-		serialPort = new SerialPort("/dev/cu.wchusbserial620");
+		serialPort = new SerialPort(comPort);
+	//	serialPort = new SerialPort("/dev/cu.wchusbserial620");
 		
 		try{
 			serialPort.openPort();
